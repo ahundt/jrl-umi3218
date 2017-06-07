@@ -1,18 +1,25 @@
-// This file is part of sch-core-python.
-//
-// sch-core-python is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published
-// by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// sch-core-python is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
-//
-// You should have received a copy of the GNU Lesser General Public License
-// along with sch-core-python.  If not, see <http://www.gnu.org/licenses/>.
+/* Copyright 2012-2017 CNRS-UM LIRMM, CNRS-AIST JRL
+ *
+ * This file is part of sch-core-python.
+ *
+ * sch-core-python is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * sch-core-python is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with sch-core-python.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include <sch/S_Object/S_Box.h>
+#include <sch/S_Polyhedron/S_Polyhedron.h>
+#include <sch/S_Object/S_Sphere.h>
+#include <sch/STP-BV/STP_BV.h>
 
 namespace sch
 {
@@ -79,4 +86,3 @@ namespace sch
   }
 
 }
-

@@ -1,0 +1,42 @@
+# Copyright 2012-2017 CNRS-UM LIRMM, CNRS-AIST JRL
+#
+# This file is part of sch-core-python.
+#
+# sch-core-python is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# sch-core-python is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with sch-core-python.  If not, see <http://www.gnu.org/licenses/>.
+
+dist: trusty
+language: python
+python:
+- '2.7'
+- '3.4'
+- '3.5'
+env:
+  global:
+    - GIT_DEPENDENCIES="jrl-umi3218/Eigen3ToPython jrl-umi3218/SpaceVecAlg jrl-umi3218/sch-core"
+addons:
+  apt:
+    packages:
+    - g++
+    - cmake
+    - libboost-all-dev
+script:
+- . ./.travis/common.sh
+- pip install .
+- nosetests
+before_install:
+- ./.travis/dependencies/eigen-3.2
+- ./.travis/run before_install
+notifications:
+  slack:
+    secure: IF3wdWNp1d9lD/W39A3hY58Qu3mAz8QjcHA6FOITf6clcT49KaeHMtS13z5pK5MocuAE7fQouyJsAjy7DfY0gd+/jOJg5mx8vZat3t7Ro2ui2h5IyB2PGXQobTtl5EB4ncupg0uCOfDHfBYfVc1Jhq/bjXa8YR16YjmSU5+eCdw=
