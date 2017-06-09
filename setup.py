@@ -119,7 +119,7 @@ extensions = [
 
 extensions = [ x for x in extensions if x is not None ]
 packages = ['sch']
-data = ['__init__.py', 'c_sch.pxd', 'sch.pxd', 'sch.so']
+data = ['__init__.py', 'c_sch.pxd', 'sch.pxd']
 
 cython_packages = [ x for x in packages if any([ext.name.startswith(x) for ext in extensions]) ]
 
