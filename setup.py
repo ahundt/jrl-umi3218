@@ -93,34 +93,13 @@ class pkg_config(object):
   def __repr__(self):
     return str(self.include_dirs)+", "+str(self.library_dirs)+", "+str(self.libraries)
 
-python_libs = []
-python_lib_dirs = []
-python_others = []
-if not win32_build:
-  tokens = subprocess.check_output(['python-config', '--ldflags']).split()
-  tokens = [ token.decode('ascii') for token in tokens ]
-  for token in tokens:
-    flag = token[:2]
-    value = token[2:]
-    if flag == '-l':
-      python_libs.append(value)
-    elif flag == '-L':
-      python_lib_dirs.append(value)
-    elif token[:1] == '-':
-      python_others.append(token)
-
 configs = { pkg: pkg_config(pkg) for pkg in ['sch-core'] }
 configs['sch-core'].merge(pkg_config('SpaceVecAlg'))
 
 for p,c in configs.items():
   c.compile_args.append('-std=c++11')
-  for o in python_others:
-    c.compile_args.append(o)
   c.include_dirs.append(os.getcwd() + "/include")
-  if not win32_build:
-    c.library_dirs.extend(python_lib_dirs)
-    c.libraries.extend(python_libs)
-  else:
+  if win32_build:
     c.compile_args.append("-DWIN32")
 
 def GenExtension(name, pkg, ):
