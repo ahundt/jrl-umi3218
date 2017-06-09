@@ -34,12 +34,12 @@ cdef class S_Object(object):
     self.impl = NULL
   def transform(self, sva.PTransformd trans):
     c_sch_private.transform(deref(self.impl), deref(trans.impl))
-  @staticmethod
-  cdef S_Object fromPtr(c_sch.S_Object * p):
-    cdef S_Object ret = S_Object()
-    ret.__own_impl = False
-    ret.impl = p
-    return ret
+
+cdef S_ObjectFromPtr(c_sch.S_Object * p):
+  cdef S_Object ret = S_Object()
+  ret.__own_impl = False
+  ret.impl = p
+  return ret
 
 
 def Sphere(double radius):
