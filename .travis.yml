@@ -16,6 +16,9 @@
 # along with sch-core-python.  If not, see <http://www.gnu.org/licenses/>.
 
 dist: trusty
+branches:
+  except:
+    - debian
 language: python
 python:
 - '2.7'
