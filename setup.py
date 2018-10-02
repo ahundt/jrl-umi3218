@@ -26,9 +26,10 @@ except ImportError:
 from Cython.Build import cythonize
 
 import hashlib
+import numpy
 import os
 import subprocess
-import numpy
+import sys
 
 win32_build = os.name == 'nt'
 
@@ -94,6 +95,8 @@ class pkg_config(object):
     return str(self.include_dirs)+", "+str(self.library_dirs)+", "+str(self.libraries)
 
 configs = { pkg: pkg_config(pkg) for pkg in ['sch-core'] }
+if not configs['sch-core'].found:
+  configs['sch-core'] = pkg_config('sch-core_d')
 configs['sch-core'].merge(pkg_config('SpaceVecAlg'))
 
 for p,c in configs.items():
@@ -111,6 +114,7 @@ def GenExtension(name, pkg, ):
     return Extension(name, [ext_src], extra_compile_args = pkg.compile_args, include_dirs = pkg.include_dirs + [numpy.get_include()], library_dirs = pkg.library_dirs, libraries = pkg.libraries)
   else:
     print("Failed to find {}".format(pkg.name))
+    sys.exit(1)
     return None
 
 extensions = [
