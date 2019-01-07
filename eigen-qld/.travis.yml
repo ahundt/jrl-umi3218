@@ -1,0 +1,27 @@
+sudo: required
+dist: trusty
+language: cpp
+compiler:
+- gcc
+- clang
+env:
+  global:
+  - APT_DEPENDENCIES="doxygen doxygen-latex libboost-all-dev gfortran"
+  - GIT_DEPENDENCIES="jrl-umi3218/Eigen3ToPython"
+  matrix:
+  - USE_PYTHON34=false
+  - USE_PYTHON34=true
+notifications:
+  slack:
+    secure: GfSvOYWJb5LM3NZbuK9PtQN6Ge7RUvfK7H1PQy55hPCVnac4ZMDg49phqkuoN1FCKDxfH9COsxFJ6ZUgOVU/ZLq/3MX3UBiE56N+T+C1St/V1caeELUPYSr0P7Fnbjk1DEO3EBthv3iP6lK3WLyXMZkOrbpVgM0xakR/vUsWSP/Fhdm5R+sNYmS2BTMzUibX9o7M4ZWb4UTPOGBvVQq1pSLJ/cVLBEo/IE+S1VHKvcc5CGdptkXdexezi7i9qtB5jvP40zpBYEzxdne5a/KJLtcWGPHcvnRlEZwYzO8oNw1IqdBC/2tIUIfl8zj0qUnJIiWyWUotIMF3dQHHBY5Ehvzrcq2jVctdbGkN1Jo3T+pM6FkT7JXuGJJ/NuMMpQDgMSoXDVpMbPufutqE4ZFwr1XU6gkNvGwIcXl94pVEGx0csNxc3L9egSGjsmYdSWKToltU78ydCEjPpILe8hUtBn0R11WmbBdPlKR1WPCdasLuvKMHpwDU4/U4qpuaDcgIo04lPasfeUMtgkfSkV/oWeCntV88T/aX55uaOeSARwKPuqRahDdRzUrxEVsNDQXguiBMSNrbTCYlv1BOuIgZikucZuzdcq84/0LSJgvf9bon29bTu/1M0N4rSpJJOKgE5kab9E7fQ3EAULH5odTtPxqwZmqzFnI3bW16qP8RxXs=
+script: ./.jrl-ci/run build
+after_success: ./.jrl-ci/run after_success
+after_failure: ./.jrl-ci/run after_failure
+before_install:
+- if [ $USE_PYTHON34 = true ]; then pushd .; pip install virtualenv; mkdir -p /tmp/_ci/virtualenv; virtualenv -p python3.4 3.4; source 3.4/bin/activate; popd; fi
+- if [ $USE_PYTHON34 = false ]; then export CMAKE_ADDITIONAL_OPTIONS="-DPYTHON_BINDING_USER_INSTALL:BOOL=ON"; fi
+- ./.jrl-ci/dependencies/eigen-3.2
+- ./.jrl-ci/run  before_install
+matrix:
+  allow_failures:
+  - compiler: clang
