@@ -29,19 +29,26 @@ GET_SVA_PROPERTY(LOCATION)
 CONFIGURE_FILE(setup.in.py ${CMAKE_CURRENT_SOURCE_DIR}/setup.py)
 
 SET(PYTHON "python")
-SET(PIP "pip")
+FIND_PROGRAM(PIP NAMES pip pip2 pip3 HINTS $ENV{HOME}/.local/bin)
+FIND_PROGRAM(PIP2 NAMES pip2 HINTS $ENV{HOME}/.local/bin)
+FIND_PROGRAM(PIP3 NAMES pip3 HINTS $ENV{HOME}/.local/bin)
+
+FIND_PROGRAM(PYTHON NAMES python HINTS $ENV{HOME}/.local/bin /usr/bin/python)
+FIND_PROGRAM(PYTHON NAMES python2 HINTS $ENV{HOME}/.local/bin /usr/bin/python2)
+FIND_PROGRAM(PYTHON NAMES python3 HINTS $ENV{HOME}/.local/bin /usr/bin/python3)
+
 IF(${PYTHON_BINDING_FORCE_PYTHON3})
   SET(PYTHON "python3")
   SET(PIP "pip3")
 ENDIF()
 
 # Build the bindings locally at build time for test purposes
-ADD_CUSTOM_TARGET(sva-python-bindings ALL
-  COMMAND ${PYTHON} setup.py build_ext --inplace
-  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-  COMMENT "Generating local SpaceVecAlg Python bindings"
-  DEPENDS include/sva_wrapper.hpp sva/c_sva.pxd sva/sva.pxd sva/sva.pyx
-)
+#ADD_CUSTOM_TARGET(sva-python-bindings ALL
+#  COMMAND ${PYTHON} setup.py build_ext --inplace
+#  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+#  COMMENT "Generating local SpaceVecAlg Python bindings"
+#  DEPENDS include/sva_wrapper.hpp sva/c_sva.pxd sva/sva.pxd sva/sva.pyx
+#)
 
 IF(NOT ${DISABLE_TESTS})
   ADD_CUSTOM_TARGET(test-sva-python-bindings
@@ -73,5 +80,21 @@ ELSE()
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     COMMENT "Install SpaceVecAlg Python bindings"
   )
+  IF(PIP2)
+    ADD_CUSTOM_TARGET(install-sva-python-bindings2
+      COMMAND ${PIP2} install ${PIP_EXTRA_OPTIONS} .
+      WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+      COMMENT "Install SpaceVecAlg Python bindings"
+    )
+    INSTALL(CODE "EXECUTE_PROCESS(COMMAND ${CMAKE_MAKE_PROGRAM} install-sva-python-bindings2)")
+  ENDIF()
+  IF(PIP3)
+    ADD_CUSTOM_TARGET(install-sva-python-bindings3
+      COMMAND ${PIP3} install ${PIP_EXTRA_OPTIONS} .
+      WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+      COMMENT "Install SpaceVecAlg Python bindings"
+    )
+    INSTALL(CODE "EXECUTE_PROCESS(COMMAND ${CMAKE_MAKE_PROGRAM} install-sva-python-bindings3)")
+  ENDIF()
 ENDIF()
 INSTALL(CODE "EXECUTE_PROCESS(COMMAND ${CMAKE_MAKE_PROGRAM} install-sva-python-bindings)")

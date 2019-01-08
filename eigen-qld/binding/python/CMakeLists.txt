@@ -56,9 +56,30 @@ if(${PYTHON_BINDING_USER_INSTALL})
 endif()
 
 # Install the bindings
-add_custom_target(install-eigen-qld-python-bindings
-  COMMAND ${CMAKE_COMMAND} -E chdir "${SETUP_LOCATION}" pip install . ${PIP_EXTRA_OPTIONS}
-  COMMENT "Install eigen-qld Python bindings"
-)
+#add_custom_target(install-eigen-qld-python-bindings
+#  COMMAND ${CMAKE_COMMAND} -E chdir "${SETUP_LOCATION}" pip install . ${PIP_EXTRA_OPTIONS}
+#  COMMENT "Install eigen-qld Python bindings"
+#)
 
-install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" --build \"${CMAKE_BINARY_DIR}\" --config \${CMAKE_INSTALL_CONFIG_NAME} --target install-eigen-qld-python-bindings)")
+#install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" --build \"${CMAKE_BINARY_DIR}\" --config \${CMAKE_INSTALL_CONFIG_NAME} --target install-eigen-qld-python-bindings)")
+if(PIP)
+  add_custom_target(install-eigen-qld-python-bindings
+    COMMAND ${CMAKE_COMMAND} -E chdir "${SETUP_LOCATION}" ${PIP} install . ${PIP_EXTRA_OPTIONS}
+    COMMENT "Install eigen-qld Python bindings"
+  )
+  install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" --build \"${CMAKE_BINARY_DIR}\" --config \${CMAKE_INSTALL_CONFIG_NAME} --target install-eigen-qld-python-bindings)")
+endif()
+if(PIP2)
+  add_custom_target(install-eigen-qld-python-bindings
+    COMMAND ${CMAKE_COMMAND} -E chdir "${SETUP_LOCATION}" ${PIP2} install . ${PIP_EXTRA_OPTIONS}
+    COMMENT "Install eigen-qld Python bindings"
+  )
+  install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" --build \"${CMAKE_BINARY_DIR}\" --config \${CMAKE_INSTALL_CONFIG_NAME} --target install-eigen-qld-python-bindings2)")
+endif()
+if(PIP3)
+  add_custom_target(install-eigen-qld-python-bindings
+    COMMAND ${CMAKE_COMMAND} -E chdir "${SETUP_LOCATION}" ${PIP3} install . ${PIP_EXTRA_OPTIONS}
+    COMMENT "Install eigen-qld Python bindings"
+  )
+  install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" --build \"${CMAKE_BINARY_DIR}\" --config \${CMAKE_INSTALL_CONFIG_NAME} --target install-eigen-qld-python-bindings3)")
+endif()

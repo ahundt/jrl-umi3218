@@ -29,7 +29,9 @@ FILE(GENERATE
       INPUT "${CMAKE_CURRENT_BINARY_DIR}/setup.in.py")
 
 SET(PYTHON "python")
-SET(PIP "pip")
+FIND_PROGRAM(PIP NAMES pip pip2 pip3 HINTS $ENV{HOME}/.local/bin)
+FIND_PROGRAM(PIP2 NAMES pip2 HINTS $ENV{HOME}/.local/bin)
+FIND_PROGRAM(PIP3 NAMES pip3 HINTS $ENV{HOME}/.local/bin)
 IF(${PYTHON_BINDING_FORCE_PYTHON3})
   SET(PYTHON "python3")
   SET(PIP "pip3")
@@ -66,6 +68,19 @@ ELSE()
     COMMAND ${CMAKE_COMMAND} -E chdir "${SETUP_LOCATION}" ${PIP} install . ${PIP_EXTRA_OPTIONS}
     COMMENT "Install RBDyn Python bindings"
   )
+  IF(PIP2)
+    ADD_CUSTOM_TARGET(install-rbdyn-python-bindings2
+      COMMAND ${CMAKE_COMMAND} -E chdir "${SETUP_LOCATION}" ${PIP} install . ${PIP_EXTRA_OPTIONS}
+      COMMENT "Install RBDyn Python bindings"
+    )
+    INSTALL(CODE "EXECUTE_PROCESS(COMMAND \"${CMAKE_COMMAND}\" --build \"${CMAKE_BINARY_DIR}\" --config \${CMAKE_INSTALL_CONFIG_NAME} --target install-rbdyn-python-bindings2)")
+  ENDIF()
+  IF(PIP3)
+    ADD_CUSTOM_TARGET(install-rbdyn-python-bindings3
+      COMMAND ${CMAKE_COMMAND} -E chdir "${SETUP_LOCATION}" ${PIP} install . ${PIP_EXTRA_OPTIONS}
+      COMMENT "Install RBDyn Python bindings"
+    )
+    INSTALL(CODE "EXECUTE_PROCESS(COMMAND \"${CMAKE_COMMAND}\" --build \"${CMAKE_BINARY_DIR}\" --config \${CMAKE_INSTALL_CONFIG_NAME} --target install-rbdyn-python-bindings3)")
+  ENDIF()
 ENDIF()
-
 INSTALL(CODE "EXECUTE_PROCESS(COMMAND \"${CMAKE_COMMAND}\" --build \"${CMAKE_BINARY_DIR}\" --config \${CMAKE_INSTALL_CONFIG_NAME} --target install-rbdyn-python-bindings)")
