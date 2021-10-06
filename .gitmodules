@@ -1,0 +1,5 @@
+[submodule "benchmark"]
+	path = RBDyn/tests/benchmark
+	url = https://github.com/google/benchmark
+	branch = 1d088a389947ef14043d14c8de90629cf96b8b66
+
